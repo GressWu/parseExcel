@@ -20,6 +20,11 @@ public class ExcelUtils {
 
     private static final Logger logger = LogManager.getLogger(ExcelUtils.class);
 
+    /**
+     * 导出对象中上有自定义注解的字段
+     * 支持一个子列表
+     * @param list
+     */
     public static void exportSheet(List<?> list) {
 
 
@@ -66,7 +71,7 @@ public class ExcelUtils {
      * @return
      */
     private static Sheet createSheet(Workbook workbook,String sheetName){
-        return workbook.createSheet("Sheet1");
+        return workbook.createSheet(sheetName);
     }
 
     /**
@@ -92,14 +97,13 @@ public class ExcelUtils {
                         } else if (value instanceof Integer) {
                             cell.setCellValue((Integer) value);
                         } else if (value instanceof List) {
-                            List list1 = (ArrayList)value;
-                            cell.setCellValue(list1.get(0).toString());
-                            for(int t = 1;t< list1.size();t++){
-                                Row row1 = sheet.createRow(rowNum++);
-                                Cell cell1 = row1.createCell(colNum - 1);
-                                cell1.setCellValue(list1.get(t).toString());
+                            List subList = (ArrayList)value;
+                            cell.setCellValue(subList.get(0).toString());
+                            for(int t = 1;t< subList.size();t++){
+                                Row subRow = sheet.createRow(rowNum++);
+                                Cell subCell = subRow.createCell(colNum - 1);
+                                subCell.setCellValue(subList.get(t).toString());
                             }
-
                         }
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
