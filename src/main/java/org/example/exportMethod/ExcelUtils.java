@@ -2,10 +2,7 @@ package org.example.exportMethod;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.annotation.ExportField;
 
@@ -13,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +129,6 @@ public class ExcelUtils {
         int flagValue = colNum;
         for (Object object : list) {
             Row row = sheet.createRow(rowNum++);
-
             colNum = flagValue;
             if(!subListFlag){
                 colNum = 0;
@@ -152,11 +149,7 @@ public class ExcelUtils {
                         } else {
                             Cell cell = row.createCell(colNum++);
                             System.out.println("行数："+rowNum+" 列数："+colNum +" 值:"+value);
-                            if (value instanceof String) {
-                                cell.setCellValue((String) value);
-                            } else if (value instanceof Integer) {
-                                cell.setCellValue((Integer) value);
-                            }
+                            writeCellData(cell,value);
                         }
                     } catch (IllegalAccessException e) {
                         logger.info(e);
@@ -167,5 +160,22 @@ public class ExcelUtils {
         }
 
         return rowNum;
+    }
+
+    /**
+     * 写入单元格值
+     * @param cell
+     * @param value
+     */
+    private static void writeCellData(Cell cell,Object value){
+        if (value instanceof String) {
+            cell.setCellValue((String) value);
+        } else if (value instanceof Integer) {
+            cell.setCellValue((Integer) value);
+        } else if (value instanceof Double){
+            cell.setCellValue((Double) value);
+        } else if (value instanceof BigDecimal) {
+            cell.setCellValue((RichTextString) value);
+        }
     }
 }
