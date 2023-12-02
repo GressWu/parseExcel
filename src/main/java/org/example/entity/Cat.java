@@ -11,7 +11,7 @@ public class Cat {
     public int age;
 
     @ExportField(name = "列表")
-    public List<String> lists;
+    public List<Gift> lists;
 
     public String getName() {
         return name;
@@ -37,17 +37,17 @@ public class Cat {
     public Cat() {
     }
 
-    public Cat(String name, int age, List<String> lists) {
+    public Cat(String name, int age, List<Gift> lists) {
         this.name = name;
         this.age = age;
         this.lists = lists;
     }
 
-    public List<String> getLists() {
+    public List<Gift> getLists() {
         return lists;
     }
 
-    public void setLists(List<String> lists) {
+    public void setLists(List<Gift> lists) {
         this.lists = lists;
     }
 }
