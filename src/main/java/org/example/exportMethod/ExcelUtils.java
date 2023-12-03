@@ -26,7 +26,6 @@ public class ExcelUtils {
      */
     public static void exportSheet(List<?> list) {
 
-
         Workbook wb = new XSSFWorkbook();
         //实体类包含的field
         Field[] fields = list.get(0).getClass().getDeclaredFields();
@@ -34,7 +33,7 @@ public class ExcelUtils {
         //创建sheet页
         Sheet sheet1 = createSheet(wb, "sheet1");
         //创建表头
-        createHeader(fields, sheet1);
+        createHeader(fields, sheet1,wb);
         //写入数据
         writeDataRecursion(fields, sheet1,  list,false,1,0);
         //输出Excel
@@ -52,7 +51,7 @@ public class ExcelUtils {
      * @param fields
      * @param sheet
      */
-    private static void createHeader(Field[] fields, Sheet sheet) {
+    private static void createHeader(Field[] fields, Sheet sheet,Workbook wb) {
         Row headerRow = sheet.createRow(0);
         int colNum = 0;
         for (Field field : fields) {
@@ -60,6 +59,10 @@ public class ExcelUtils {
             if (exportField != null) {
                 Cell cell = headerRow.createCell(colNum++);
                 cell.setCellValue(exportField.name());
+                CellStyle style = wb.createCellStyle();
+                style.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
+                style.setFillPattern(FillPatternType.BIG_SPOTS);
+                cell.setCellStyle(style);
             }
         }
     }
